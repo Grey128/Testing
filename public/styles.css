@@ -1,0 +1,136 @@
+/* Reset some default styles */
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #4CAF50;
+}
+
+nav a {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+}
+
+nav a:hover {
+    background-color: #45a049;
+}
+
+main {
+    padding: 2rem;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+video {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+}
+
+.enter-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.enter-button:hover {
+    color: #45a049;
+}
+
+.menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    text-align: center;
+}
+
+.menu a {
+    background-color: rgba(255, 255, 255, 0);
+    color: #333;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 0.5rem 1rem;
+    border: none; /* Remove borders */
+}
+
+.menu a:hover {
+    color: #f00; /* Change text color to red */
+    text-shadow: 0 0 10px #f00, 0 0 20px #f00, 0 0 30px #f00; /* Add red glow effect */
+}
+
+.uploaded-image {
+    max-width: 500px;
+    max-height: 500px;
+    object-fit: cover;
+    margin: 10px;
+}
+
+.btn {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2rem;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .btn:hover {
+    color: red;
+  }
+
+  .container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
