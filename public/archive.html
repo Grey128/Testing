@@ -7,23 +7,21 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <a class="btn" href="https://www.instagram.com">Instagram</a>
-    <a class="btn" href="https://www.shopify.com">Shopify</a>
-    <a class="btn" href="archive.html">Archive</a>
-    <a class="btn" href="#">Commission</a>
-  </div>
-
-  <video autoplay muted loop id="bg-video">
-    <source src="video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-
-  <audio id="bg-audio" loop>
-    <source src="audio.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-
-  <script src="scripts-archive.js"></script>
+  <h1>Archive</h1>
+  <form action="/login" method="post">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required>
+    <br>
+    <button type="submit">Log in</button>
+  </form>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="photo" accept="image/*" required>
+    <button type="submit">Upload</button>
+  </form>
+  <div id="images-container"></div>
+  <script src="archive.js"></script>
 </body>
 </html>

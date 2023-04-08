@@ -1,9 +1,8 @@
 function enterSite() {
-    window.location.href = 'archive.html';
-  }
-  
-  document.addEventListener('DOMContentLoaded', function () {
-    var video = document.getElementById('bg-video');
-    video.play();
-  });
-  
+  window.location.href = 'main.html';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  var video = document.getElementById('bg-video');
+  video.play();
+});
