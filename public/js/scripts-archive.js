@@ -25,23 +25,33 @@ function displayImages(images) {
       .then(images => displayImages(images));
   });
 // Compare this function from app.js:
+
 async function fetchImages() {
-    try {
-      const response = await fetch('/images');
-      if (response.ok) {
-        const images = await response.json();
-        const imageGrid = document.getElementById('image-grid');
-        imageGrid.innerHTML = '';
+    const response = await fetch('/images');
+    const images = await response.json();
+    
+    const imageContainer = document.getElementById('image-container');
+    imageContainer.innerHTML = '';
   
-        for (const image of images) {
-          const imgElement = document.createElement('img');
-          imgElement.src = `/uploads/${image.filename}`;
-          imgElement.width = 200;
-          imgElement.height = 200;
-          imageGrid.appendChild(imgElement);
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching images:', err);
-    }
+    images.forEach(image => {
+      const imgDiv = document.createElement('div');
+      imgDiv.className = 'image-box';
+  
+      const img = document.createElement('img');
+      img.src = `uploads/${image.filename}`;
+      img.alt = image.name;
+  
+      const overlay = document.createElement('div');
+      overlay.className = 'overlay';
+  
+      const imgText = document.createElement('p');
+      imgText.className = 'image-text';
+      imgText.innerText = image.name;
+  
+      overlay.appendChild(imgText);
+      imgDiv.appendChild(img);
+      imgDiv.appendChild(overlay);
+      imageContainer.appendChild(imgDiv);
+    });
   }
+  
