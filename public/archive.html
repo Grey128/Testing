@@ -6,40 +6,71 @@
   <title>Archive</title>
   <link rel="stylesheet" href="css/styles.css">
   <script src="scripts-archive.js"></script>
+  <script src="scripts-archive.js" defer></script>
+
   
   <style>
     .image-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-      grid-gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-gap: 1rem;
+      padding: 1rem;
     }
-    .image-container {
-      position: relative;
-      width: 500px;
-      height: 500px;
-    }
-    .image-container img {
+    .image-grid img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    .image-container .image-name {
-      display: none;
+
+    .image-grid a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .image-grid a:hover {
+      opacity: 0.5;
+    }
+
+    .image-grid a:hover img {
+      transform: scale(1.1);
+    }
+
+    .image-grid a:hover .image-overlay {
+      opacity: 1;
+    }
+
+    .image-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .image-overlay h2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
+      font-size: 2rem;
+      font-weight: 400;
+      text-align: center;
     }
-    .image-container:hover .image-name {
-      display: flex;
+
+    .image-overlay h2 span {
+      font-weight: 700;
     }
+
+    .image-overlay h2 span:nth-child(2) {
+      display: block;
+      font-size: 1.5rem;
+    }
+
   </style>
 </head>
 <body>
