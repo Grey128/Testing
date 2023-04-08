@@ -1,3 +1,11 @@
+function createImage(image) {
+  const img = document.createElement('img');
+  img.src = `/uploads/${image.filename}`; // Change this line
+  img.alt = image.filename;
+  img.className = 'image';
+  return img;
+}
+
 async function fetchImages() {
     try {
       const response = await fetch('/images');

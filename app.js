@@ -78,17 +78,20 @@ app.post('/upload', ensureAuthenticated, upload.single('photo'), (req, res) => {
   res.redirect('/archive.html');
 });
 
-app.get('/images', ensureAuthenticated, (req, res) => {
+app.get('/images', (req, res) => {
   fs.readdir('uploads', (err, files) => {
     if (err) {
       res.status(500).send('Error reading uploads directory');
     } else {
-      res.json(files.map(filename => ({ filename })));
+      res.json(
+        files.map((filename) => ({
+          filename,
+          filepath: path.join('/uploads', filename),
+        }))
+      );
     }
   });
 });
-
-
 
 app.get('/is-admin', ensureAuthenticated, (req, res) => {
   res.json(req.user.role === 'admin');
