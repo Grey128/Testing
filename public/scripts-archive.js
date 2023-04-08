@@ -36,3 +36,5 @@ function animateBrokenText(element) {
 
   requestAnimationFrame(animation);
 }
+
+document.body.appendChild(brokenText);
