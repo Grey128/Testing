@@ -1,56 +1,38 @@
-function displayImages(images) {
-    const container = document.getElementById('image-container');
-    container.innerHTML = '';
-  
-    for (const image of images) {
-      const div = document.createElement('div');
-      div.className = 'image-wrapper';
-  
-      const img = document.createElement('img');
-      img.src = `/uploads/${image.filename}`;
-      img.alt = image.name;
-  
-      const name = document.createElement('p');
-      name.textContent = image.name;
-  
-      div.appendChild(img);
-      div.appendChild(name);
-      container.appendChild(div);
-    }
-  }
-  
-  document.addEventListener('DOMContentLoaded', () => {
-    fetch('/images')
-      .then(response => response.json())
-      .then(images => displayImages(images));
-  });
-// Compare this function from app.js:
+document.addEventListener('DOMContentLoaded', () => {
+  const brokenText = createBrokenText();
+  document.body.appendChild(brokenText);
+  animateBrokenText(brokenText);
+});
 
-async function fetchImages()
-{
-    try
-    {
-        const response = await fetch('/images');
-        if (response.ok)
-        {
-            const images = await response.json();
-            const imageGrid = document.getElementById('image-grid');
-            imageGrid.innerHTML = '';
-
-            for (const image of images)
-            {
-                const imgElement = document.createElement('img');
-                imgElement.src = `/uploads/${image.filename}`;
-                imgElement.width = 200;
-                imgElement.height = 200;
-                imageGrid.appendChild(imgElement);
-            }
-        }
-    }
-    catch (err)
-    {
-        console.error('Error fetching images:', err);
-    }
+function createBrokenText() {
+  const div = document.createElement('div');
+  div.textContent = '[broken af]';
+  div.className = 'broken-text';
+  return div;
 }
 
-// Compare this function from public\scripts-upload.js:
+function animateBrokenText(element) {
+  let xPos = 0;
+  let yPos = 0;
+  let xSpeed = 2;
+  let ySpeed = 2;
+
+  const animation = () => {
+    xPos += xSpeed;
+    yPos += ySpeed;
+
+    if (xPos + element.clientWidth > window.innerWidth || xPos < 0) {
+      xSpeed = -xSpeed;
+    }
+
+    if (yPos + element.clientHeight > window.innerHeight || yPos < 0) {
+      ySpeed = -ySpeed;
+    }
+
+    element.style.left = xPos + 'px';
+    element.style.top = yPos + 'px';
+    requestAnimationFrame(animation);
+  };
+
+  requestAnimationFrame(animation);
+}
