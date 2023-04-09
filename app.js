@@ -24,14 +24,23 @@ const upload = multer({ storage: storage });
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({ secret: 'your secret here', resave: false, saveUninitialized: false }));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cookieParser('keyboard cat'));
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60000 },
+  })
+);
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 
 
@@ -42,19 +51,19 @@ const user = {
   password: '$2b$10$K7eRdR8gzHuv1nLm2Z9LGOJW8TP3q3hIYwYkA55yCSDRJzml0pq0u', // bcrypt hash of the password "password"
 };
 
-passport.use(new LocalStrategy(
-  async (username, password, done) => {
-    if (username !== user.username) {
-      return done(null, false, { message: 'Incorrect username.' });
-    }    
-    
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return done(null, false, { message: 'Incorrect password.' });
-    }
-    return done(null, user);
+passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+  const user = users.find(user => user.email === email);
+
+  if (!user) {
+    return done(null, false, { message: 'Incorrect email.' });
   }
-));
+
+  if (user.password !== password) {
+    return done(null, false, { message: 'Incorrect password.' });
+  }
+
+  return done(null, user);
+}));
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
