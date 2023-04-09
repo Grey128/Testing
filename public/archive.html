@@ -3,78 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Archive</title>
   <link rel="stylesheet" href="css/styles.css">
-  <script src="scripts-archive.js"></script>
-  <script src="scripts-archive.js" defer></script>
-
-  
+  <title>Archive</title>
   <style>
-    .image-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      grid-gap: 1rem;
-      padding: 1rem;
-    }
-    .image-grid img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    body {
+      margin: 0;
+      background-color: white;
+      overflow: hidden;
+      position: relative;
     }
 
-    .image-grid a {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .image-grid a:hover {
-      opacity: 0.5;
-    }
-
-    .image-grid a:hover img {
-      transform: scale(1.1);
-    }
-
-    .image-grid a:hover .image-overlay {
-      opacity: 1;
-    }
-
-    .image-overlay {
+    .image-background {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
     }
 
-    .image-overlay h2 {
+    .star {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 2rem;
-      font-weight: 400;
-      text-align: center;
+      width: 20px;
+      height: 20px;
+      background-color: black;
+      clip-path: polygon(50% 0%, 61% 35%, 100% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 0% 35%, 39% 35%);
     }
-
-    .image-overlay h2 span {
-      font-weight: 700;
-    }
-
-    .image-overlay h2 span:nth-child(2) {
-      display: block;
-      font-size: 1.5rem;
-    }
-
   </style>
 </head>
 <body>
-  <div class="image-grid" id="image-grid"></div>
-  <script defer src="scripts-archive.js"></script>
+  <script src="scripts-archive.js"></script>
+  
+  <div class="star"></div>
+  <script>
+    const star = document.querySelector('.star');
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+    let x = Math.floor(Math.random() * windowWidth);
+    let y = Math.floor(Math.random() * windowHeight);
+    let xSpeed = 1;
+    let ySpeed = 1;
+
+    function updatePosition() {
+      x += xSpeed;
+      y += ySpeed;
+
+      if (x < 0 || x > windowWidth - star.offsetWidth) {
+        xSpeed = -xSpeed;
+      }
+      if (y < 0 || y > windowHeight - star.offsetHeight) {
+        ySpeed = -ySpeed;
+      }
+
+      star.style.left = x + 'px';
+      star.style.top = y + 'px';
+    }
+
+    setInterval(updatePosition, 10);
+  </script>
 </body>
 </html>

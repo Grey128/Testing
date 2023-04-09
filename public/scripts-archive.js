@@ -1,40 +1,19 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const brokenText = createBrokenText();
-  document.body.appendChild(brokenText);
-  animateBrokenText(brokenText);
-});
-
-function createBrokenText() {
-  const div = document.createElement('div');
-  div.textContent = '[broken af]';
-  div.className = 'broken-text';
-  return div;
+async function fetchImages() {
+  const response = await fetch('/images');
+  const images = await response.json();
+  return images;
 }
 
-function animateBrokenText(element) {
-  let xPos = 0;
-  let yPos = 0;
-  let xSpeed = 2;
-  let ySpeed = 2;
-
-  const animation = () => {
-    xPos += xSpeed;
-    yPos += ySpeed;
-
-    if (xPos + element.clientWidth > window.innerWidth || xPos < 0) {
-      xSpeed = -xSpeed;
-    }
-
-    if (yPos + element.clientHeight > window.innerHeight || yPos < 0) {
-      ySpeed = -ySpeed;
-    }
-
-    element.style.left = xPos + 'px';
-    element.style.top = yPos + 'px';
-    requestAnimationFrame(animation);
-  };
-
-  requestAnimationFrame(animation);
+async function setBackgroundImage() {
+  const images = await fetchImages();
+  if (images.length > 0) {
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+    const imageUrl = `/uploads/${randomImage.filename}`;
+    const backgroundElement = document.createElement('img');
+    backgroundElement.className = 'image-background';
+    backgroundElement.src = imageUrl;
+    document.body.appendChild(backgroundElement);
+  }
 }
 
-document.body.appendChild(brokenText);
+setBackgroundImage();
