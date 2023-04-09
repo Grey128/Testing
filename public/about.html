@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+    <link rel="stylesheet" href="win95.css">
+    <link rel="stylesheet" href="about.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script defer src="https://unpkg.com/ghwd@1.0.0/dist/ghwd.min.js"></script>
+</head>
+<body>
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-bar-text">About Me</div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize" disabled></button>
+                <button aria-label="Maximize" disabled></button>
+                <button aria-label="Close" disabled></button>
+            </div>
+        </div>
+        <div class="window-body">
+          <img src="your-profile-picture.jpg" alt="Your profile picture" class="profile-picture">
+          <h1>Your Name</h1>
+          <h2>Role or Occupation</h2>
+          <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras porttitor metus justo, ut ullamcorper velit interdum et. Sed pellentesque odio vel massa luctus feugiat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse potenti. Curabitur consectetur ligula in metus interdum, ut tempus odio venenatis. Nullam sapien massa, commodo sit amet elementum sit amet, fermentum ut nisi.
+          </p>
+          
+          <!-- Add Win95.css example elements here -->
+          <div class="field-row">
+              <label for="name">Name</label>
+              <input type="text" id="name" value="John Doe">
+          </div>
+          <div class="field-row">
+              <label for="email">Email</label>
+              <input type="email" id="email" value="john.doe@example.com">
+          </div>
+          <div class="field-row">
+              <label for="website">Website</label>
+              <input type="url" id="website" value="https://example.com">
+          </div>
+          <div class="field-row">
+              <input type="checkbox" id="newsletter" checked>
+              <label for="newsletter">Subscribe to newsletter</label>
+          </div>
+          <div class="field-row">
+              <label for="message">Message</label>
+              <textarea id="message" rows="4"></textarea>
+          </div>
+          <div class="field-row">
+              <button>Send message</button>
+          </div>
+      
+          <h2>Contact</h2>
+          <p>Email: <a href="mailto:your-email@example.com">your-email@example.com</a></p>
+          <p>Phone: (123) 456-7890</p>
+          <p>Website: <a href="https://your-website.com">your-website.com</a></p>
+      </div>
+    </div>
+</body>
+</html>
