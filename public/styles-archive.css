@@ -1,33 +1,19 @@
 body {
     font-family: Arial, sans-serif;
     position: relative;
-    cursor: none; /* Add this line to hide the cursor */
+    cursor: none;
     overflow: hidden;
-}
-
-.star {
-    position: fixed;
-    font-size: 20px; /* Change the font-size */
-    color: gold;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .star {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: black;
     pointer-events: none;
-}
-
-.gallery img {
-    max-width: 100px;
-    transition: all 0.3s;
-}
-
-.gallery img:hover {
-    transform: scale(1.5);
-}
-
-#image-name {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 5px 10px;
-    display: none;
-}
+  }
+  
