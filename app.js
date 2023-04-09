@@ -22,7 +22,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
+app.use(
+  session({
+    secret: 'cheese',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(session({ secret: 'your secret here', resave: false, saveUninitialized: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
@@ -37,9 +44,9 @@ app.use(
     cookie: { maxAge: 60000 },
   })
 );
-app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 
 
@@ -51,19 +58,21 @@ const user = {
   password: '$2b$10$K7eRdR8gzHuv1nLm2Z9LGOJW8TP3q3hIYwYkA55yCSDRJzml0pq0u', // bcrypt hash of the password "password"
 };
 
-passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-  const user = users.find(user => user.email === email);
+passport.use(
+  new LocalStrategy(function (username, password, done) {
+    const users = JSON.parse(fs.readFileSync('users.json'));
+    const user = users.find((user) => user.username === username);
 
-  if (!user) {
-    return done(null, false, { message: 'Incorrect email.' });
-  }
+    if (!user) {
+      return done(null, false, { message: 'Incorrect username.' });
+    }
+    if (user.password !== password) {
+      return done(null, false, { message: 'Incorrect password.' });
+    }
+    return done(null, user);
+  })
+);
 
-  if (user.password !== password) {
-    return done(null, false, { message: 'Incorrect password.' });
-  }
-
-  return done(null, user);
-}));
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -84,11 +93,15 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login.html');
 }
 
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/main.html',
-  failureRedirect: '/login.html',
-  failureFlash: true
-}));
+app.post(
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/main',
+    failureRedirect: '/login',
+    failureFlash: true,
+  })
+);
+
 
 app.post('/upload', ensureAuthenticated, upload.single('image'), (req, res) => {
   if (!req.file) {
@@ -96,6 +109,10 @@ app.post('/upload', ensureAuthenticated, upload.single('image'), (req, res) => {
   } else {
     res.redirect('/main.html');
   }
+});
+
+app.get('/login', function (req, res) {
+  res.sendFile(__dirname + '/login.html');
 });
 
 app.get('/images', (req, res) => {
