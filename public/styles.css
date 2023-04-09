@@ -317,7 +317,7 @@ body {
   align-items: flex-start;
   height: 100vh;
   padding-top: 10%;
-  background-image: url('wireframe-pattern.png');
+  background-image: ("/uploads/cat.jpg");
   background-size: cover;
 }
 
