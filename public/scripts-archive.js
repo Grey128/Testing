@@ -1,46 +1,54 @@
-document.addEventListener('DOMContentLoaded', () => {
-  loadImages();
+let stars = [];
+let starIdCounter = 1;
+let mouseX = 0;
+let mouseY = 0;
+
+function createStar(x, y) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    star.style.left = x + 'px';
+    star.style.top = y + 'px';
+    star.id = 'star' + starIdCounter;
+    starIdCounter++;
+    stars.push({ element: star, velocity: { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 } });
+    document.body.appendChild(star);
+}
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.pageX;
+    mouseY = e.pageY;
 });
 
-async function loadImages() {
-  try {
-    const response = await fetch('/images');
-    const images = await response.json();
-    const imagesContainer = document.getElementById('images-container');
-
-    for (const image of images) {
-      const imageUrl = '/uploads/' + image.filename;
-      const imageCard = document.createElement('div');
-      imageCard.className = 'image-card';
-
-      const img = document.createElement('img');
-      img.src = imageUrl;
-      imageCard.appendChild(img);
-
-      const deleteButton = document.createElement('button');
-      deleteButton.textContent = 'Delete';
-      deleteButton.addEventListener('click', () => deleteImage(image.filename));
-      imageCard.appendChild(deleteButton);
-
-      imagesContainer.appendChild(imageCard);
-    }
-  } catch (error) {
-    console.error('Error loading images:', error);
-  }
+function spawnStars() {
+    createStar(mouseX, mouseY);
 }
 
-async function deleteImage(filename) {
-  try {
-    const response = await fetch(`/images/${filename}`, {
-      method: 'DELETE',
+setInterval(spawnStars, 1000 / 10); // Spawn stars 10 times per second
+
+function updateStarPositions() {
+    stars.forEach((star, index) => {
+        star.element.style.left = parseFloat(star.element.style.left) + star.velocity.x + 'px';
+        star.element.style.top = parseFloat(star.element.style.top) + star.velocity.y + 'px';
+
+        if (parseFloat(star.element.style.left) < 0 || parseFloat(star.element.style.top) < 0 || parseFloat(star.element.style.left) > window.innerWidth || parseFloat(star.element.style.top) > window.innerHeight) {
+            document.body.removeChild(star.element);
+            stars.splice(index, 1);
+        }
+    });
+}
+
+setInterval(updateStarPositions, 1000 / 60); // Update star positions 60 times per second
+
+const images = document.querySelectorAll('.gallery img');
+const imageName = document.getElementById('image-name');
+
+images.forEach((img) => {
+    img.addEventListener('mouseover', () => {
+        imageName.textContent = img.dataset.name;
+        imageName.style.display = 'block';
     });
 
-    if (response.ok) {
-      location.reload();
-    } else {
-      console.error('Error deleting image');
-    }
-  } catch (error) {
-    console.error('Error deleting image:', error);
-  }
-}
+    img.addEventListener('mouseout', () => {
+        imageName.style.display = 'none';
+    });
+});

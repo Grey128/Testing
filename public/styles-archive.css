@@ -1,0 +1,33 @@
+body {
+    font-family: Arial, sans-serif;
+    position: relative;
+    cursor: none; /* Add this line to hide the cursor */
+    overflow: hidden;
+}
+
+.star {
+    position: fixed;
+    font-size: 20px; /* Change the font-size */
+    color: gold;
+    pointer-events: none;
+}
+
+.gallery img {
+    max-width: 100px;
+    transition: all 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.5);
+}
+
+#image-name {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    display: none;
+}

@@ -38,6 +38,70 @@
     color: red;
   }
   
+  .title {
+    font-size: 28px;
+    color: white;
+    text-decoration: none;
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    position: absolute;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .title-main {
+    font-size: 18px;
+    margin: 10px;
+  }
+
+  .title:hover {
+    color: red;
+  }
+  
+  .title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background-color: red;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+  }
+
+  .title:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  .title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background-color: red;
+    transform: scaleX(0);
+    transform-origin: bottom left;
+    transition: transform 0.25s ease-out;
+  }
+  
+  .title:hover::before {
+    transform: scaleX(1);
+    transform-origin: bottom right;
+  }
+
+  
   #bg-video {
     position: fixed;
     top: 50%;

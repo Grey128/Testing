@@ -13,7 +13,9 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 const storage = multer.diskStorage({
-  destination: 'uploads/',
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);
   },
@@ -103,11 +105,39 @@ app.post(
 );
 
 
-app.post('/upload', ensureAuthenticated, upload.single('image'), (req, res) => {
+app.post('/upload', upload.none(), (req, res, next) => {
+  const password = req.body.password;
+  const correctPassword = "Cheese"; // Set your desired password here
+
+  if (password !== correctPassword) {
+    res.status(401).send('Unauthorized: Invalid password');
+    return;
+  }
+
   if (!req.file) {
     res.status(400).send('No file uploaded');
+    return;
+  }
+
+  const tempPath = req.files['image'][0].path;
+  const targetPath = path.join(__dirname, "./uploads/" + req.file.filename);
+
+  if (path.extname(req.file.originalname).toLowerCase() === ".png" || path.extname(req.file.originalname).toLowerCase() === ".jpg" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" || path.extname(req.file.originalname).toLowerCase() === ".tiff") {
+    fs.rename(tempPath, targetPath, err => {
+      if (err) {
+        res.status(500).send('Error saving file');
+        return;
+      }
+      res.status(200).send('File uploaded and saved');
+    });
   } else {
-    res.redirect('/main.html');
+    fs.unlink(tempPath, err => {
+      if (err) {
+        res.status(500).send('Error deleting temporary file');
+        return;
+      }
+      res.status(400).send('Only .png, .jpg, .jpeg and .tiff files are allowed');
+    });
   }
 });
 

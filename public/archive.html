@@ -1,72 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/styles.css">
-  <title>Archive</title>
-    <div id="images-container"></div>
-    <script src="/scripts-archive.js"></script>
-  <style>
-    body {
-      margin: 0;
-      background-color: white;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .image-background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      z-index: -1;
-    }
-
-    .star {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: black;
-      clip-path: polygon(50% 0%, 61% 35%, 100% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 0% 35%, 39% 35%);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles-archive.css">
+    <script src="scripts-archive.js" defer></script>
+    <title>Archive</title>
 </head>
 <body>
-  <script src="scripts-archive.js"></script>
-
-<button class="delete-button" onclick="deleteImage('{{filename}}')">Delete</button>
- 
-<div class="star"></div>
-  <script>
-    const star = document.querySelector('.star');
-    const windowHeight = window.innerHeight;
-    const windowWidth = window.innerWidth;
-    let x = Math.floor(Math.random() * windowWidth);
-    let y = Math.floor(Math.random() * windowHeight);
-    let xSpeed = 1;
-    let ySpeed = 1;
-
-    function updatePosition() {
-      x += xSpeed;
-      y += ySpeed;
-
-      if (x < 0 || x > windowWidth - star.offsetWidth) {
-        xSpeed = -xSpeed;
-      }
-      if (y < 0 || y > windowHeight - star.offsetHeight) {
-        ySpeed = -ySpeed;
-      }
-
-      star.style.left = x + 'px';
-      star.style.top = y + 'px';
-    }
-
-    setInterval(updatePosition, 10);
-  </script>
+    <div id="star1" class="star">*</div>
+    <div id="star2" class="star">*</div>
+    <div class="gallery">
+        <img src="/uploads/cat.jpg" alt="Image 1" data-name="Image 1">
+        <img src="/uploads/https___images.genius.com_b93af826f09e003689a94db7d880dcd4.500x500x1.jpg" alt="Image 2" data-name="Image 2">
+    </div>
+    <div id="image-name"></div>
 </body>
 </html>
