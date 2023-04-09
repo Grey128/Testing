@@ -189,7 +189,7 @@
     background-color: #000;
     color: #fff;
   }
-  
+
   .image-background {
     position: fixed;
     top: 0;
@@ -200,3 +200,30 @@
     object-fit: cover;
   }
   
+  .image-card {
+  display: inline-block;
+  margin: 10px;
+  position: relative;
+}
+
+.image-card img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.image-card button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.image-card button:hover {
+  background-color: #555;
+}

@@ -6,6 +6,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const path = require('path');
+const { unlink } = require('fs/promises');
 
 const app = express();
 const storage = multer.diskStorage({
@@ -96,17 +97,16 @@ app.get('/images', (req, res) => {
 });
 
 
-app.delete('/image/:filename', ensureAuthenticated, (req, res) => {
-  const filePath = path.join(__dirname, 'uploads', req.params.filename);
+app.delete('/images/:filename', ensureAuthenticated, async (req, res) => {
+  try {
+    const filename = req.params.filename;
+    await unlink(path.join(__dirname, 'uploads', filename));
 
-  fs.unlink(filePath, (err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error deleting image');
-    } else {
-      res.sendStatus(200);
-    }
-  });
+    res.status(200).json({ message: 'Image deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    res.status(500).json({ message: 'Error deleting image.' });
+  }
 });
 
 app.listen(3000, () => {
