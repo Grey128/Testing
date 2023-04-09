@@ -16,4 +16,15 @@ async function setBackgroundImage() {
   }
 }
 
+async function deleteImage(filename) {
+  const response = await fetch(`/image/${filename}`, { method: 'DELETE' });
+
+  if (response.ok) {
+    alert('Image deleted successfully.');
+    window.location.reload();
+  } else {
+    alert('Error deleting image. Please try again.');
+  }
+}
+
 setBackgroundImage();

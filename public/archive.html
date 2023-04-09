@@ -36,8 +36,10 @@
 </head>
 <body>
   <script src="scripts-archive.js"></script>
-  
-  <div class="star"></div>
+
+<button class="delete-button" onclick="deleteImage('{{filename}}')">Delete</button>
+ 
+<div class="star"></div>
   <script>
     const star = document.querySelector('.star');
     const windowHeight = window.innerHeight;

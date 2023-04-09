@@ -24,16 +24,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Read users from the users.json file
-const users = JSON.parse(fs.readFileSync('./users.json', 'utf-8'));
+// Dummy user for demonstration purposes
+const user = {
+  id: '1',
+  username: 'admin',
+  password: '$2b$10$K7eRdR8gzHuv1nLm2Z9LGOJW8TP3q3hIYwYkA55yCSDRJzml0pq0u', // bcrypt hash of the password "password"
+};
 
 passport.use(new LocalStrategy(
   async (username, password, done) => {
-    const user = users.find(u => u.username === username);
-    if (!user) {
+    if (username !== user.username) {
       return done(null, false, { message: 'Incorrect username.' });
-    }
-
+    }    
+    
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       return done(null, false, { message: 'Incorrect password.' });
@@ -47,8 +50,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  const user = users.find(u => u.id === id);
-  if (user) {
+  if (id === user.id) {
     done(null, user);
   } else {
     done(new Error('User not found'), null);
@@ -63,19 +65,16 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.post('/login', passport.authenticate('local', {
-  successRedirect: '/upload.html',
+  successRedirect: '/main.html',
   failureRedirect: '/login.html',
 }));
 
-app.post('/upload', ensureAuthenticated, upload.single('photo'), (req, res) => {
-  const image = {
-    name: req.body.name,
-    path: '/uploads/' + req.file.filename,
-  };
-  const images = JSON.parse(fs.readFileSync('images.json', 'utf-8'));
-  images.push(image);
-  fs.writeFileSync('images.json', JSON.stringify(images));
-  res.redirect('/archive.html');
+app.post('/upload', ensureAuthenticated, upload.single('image'), (req, res) => {
+  if (!req.file) {
+    res.status(400).send('No file uploaded');
+  } else {
+    res.redirect('/main.html');
+  }
 });
 
 app.get('/images', (req, res) => {
@@ -83,42 +82,24 @@ app.get('/images', (req, res) => {
     if (err) {
       res.status(500).send('Error reading uploads directory');
     } else {
-      res.json(
-        files.map((filename) => ({
-          filename,
-          filepath: path.join('/uploads', filename),
-        }))
-      );
+      res.json(files.map(filename => ({ filename })));
     }
   });
 });
 
-app.get('/is-admin', ensureAuthenticated, (req, res) => {
-  res.json(req.user.role === 'admin');
-});
+app.delete('/image/:filename', ensureAuthenticated, (req, res) => {
+  const filePath = path.join(__dirname, 'uploads', req.params.filename);
 
-app.post('/delete-image', ensureAuthenticated, (req, res) => {
-  if (req.user.role !== 'admin') {
-    res.status(403).send('Forbidden');
-    return;
-  }
-
-  const images = JSON.parse(fs.readFileSync('images.json', 'utf-8'));
-  const imageToDelete = req.body.imageToDelete;
-  const filteredImages = images.filter(image => image.path !== imageToDelete);
-  fs.writeFileSync('images.json', JSON.stringify(filteredImages));
-
-  const filename = imageToDelete.replace('/uploads/', '');
-  fs.unlink(path.join(__dirname, 'uploads', filename), (err) => {
+  fs.unlink(filePath, (err) => {
     if (err) {
-      console.error('Error deleting image file:', err);
-      res.status(500).send('Error deleting image file');
+      console.error(err);
+      res.status(500).send('Error deleting image');
     } else {
-      res.status(200).send('Image deleted');
+      res.sendStatus(200);
     }
   });
 });
 
 app.listen(3000, () => {
-  console.log('Server listening on port 3000');
+  console.log('Server is running on port 3000');
 });
