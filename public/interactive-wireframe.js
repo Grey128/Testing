@@ -1,78 +1,89 @@
-const canvas = document.getElementById('wireframeCanvas');
+const canvas = document.getElementById('wireframe');
 const ctx = canvas.getContext('2d');
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-class Point {
-  constructor(x, y) {
+class Circle {
+  constructor(x, y, radius) {
     this.x = x;
     this.y = y;
+    this.radius = radius;
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
   }
 }
 
-const points = [];
-const connections = [];
-const gridSize = 50;
-const connectionDistance = 100;
-const interactionRadius = 80;
+class Line {
+  constructor(x1, y1, x2, y2) {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+  }
 
-function createPoints() {
-  for (let i = 0; i < canvas.width; i += gridSize) {
-    for (let j = 0; j < canvas.height; j += gridSize) {
-      points.push(new Point(i, j));
+  draw() {
+    ctx.beginPath();
+    ctx.moveTo(this.x1, this.y1);
+    ctx.lineTo(this.x2, this.y2);
+    ctx.strokeStyle = '#ffffff';
+    ctx.stroke();
+  }
+}
+
+const circles = [];
+const lines = [];
+
+for (let i = 0; i < 50; i++) {
+  const x = Math.random() * canvas.width;
+  const y = Math.random() * canvas.height;
+  const radius = Math.random() * 4;
+  circles.push(new Circle(x, y, radius));
+}
+
+function connectCircles() {
+  lines.length = 0;
+
+  for (let i = 0; i < circles.length; i++) {
+    for (let j = i + 1; j < circles.length; j++) {
+      const dx = circles[i].x - circles[j].x;
+      const dy = circles[i].y - circles[j].y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < 200) {
+        lines.push(new Line(circles[i].x, circles[i].y, circles[j].x, circles[j].y));
+      }
     }
   }
 }
 
-function connectPoints() {
-  for (let i = 0; i < points.length; i++) {
-    for (let j = i + 1; j < points.length; j++) {
-      connections.push([points[i], points[j]]);
-    }
-  }
-}
-
-function drawGrid() {
+function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  connections.forEach(connection => {
-    ctx.beginPath();
-    ctx.moveTo(connection[0].x, connection[0].y);
-    ctx.lineTo(connection[1].x, connection[1].y);
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
-    ctx.stroke();
-  });
+  for (const circle of circles) {
+    circle.draw();
+  }
 
-  points.forEach(point => {
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, 2, 0, 2 * Math.PI);
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-    ctx.fill();
-  });
+  for (const line of lines) {
+    line.draw();
+  }
+
+  connectCircles();
+  requestAnimationFrame(animate);
 }
 
-createPoints();
-connectPoints();
-drawGrid();
+animate();
 
-canvas.addEventListener('mousemove', e => {
-  const cursorPos = new Point(e.clientX, e.clientY);
+window.addEventListener('mousemove', (e) => {
+  circles[0].x = e.clientX;
+  circles[0].y = e.clientY;
+});
 
-  points.forEach(point => {
-    const dx = point.x - cursorPos.x;
-    const dy = point.y - cursorPos.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    if (dist < interactionRadius) {
-      const angle = Math.atan2(dy, dx);
-      const offsetX = Math.cos(angle) * (interactionRadius - dist) * 0.2;
-      const offsetY = Math.sin(angle) * (interactionRadius - dist) * 0.2;
-
-      point.x += offsetX;
-      point.y += offsetY;
-    }
-  });
-
-  drawGrid();
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 });
