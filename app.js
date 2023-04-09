@@ -23,6 +23,11 @@ app.use(session({ secret: 'your secret here', resave: false, saveUninitialized: 
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
+app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
 
 // Dummy user for demonstration purposes
 const user = {
@@ -82,10 +87,14 @@ app.get('/images', (req, res) => {
     if (err) {
       res.status(500).send('Error reading uploads directory');
     } else {
-      res.json(files.map(filename => ({ filename })));
+      res.json(files.map(filename => ({
+        filename,
+        path: '/uploads/' + filename
+      })));
     }
   });
 });
+
 
 app.delete('/image/:filename', ensureAuthenticated, (req, res) => {
   const filePath = path.join(__dirname, 'uploads', req.params.filename);
