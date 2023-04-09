@@ -112,7 +112,7 @@ app.post('/upload', ensureAuthenticated, upload.single('image'), (req, res) => {
 });
 
 app.get('/login', function (req, res) {
-  res.sendFile(__dirname + '/login.html');
+  res.sendFile(__dirname + '/public/login.html');
 });
 
 app.get('/images', (req, res) => {
