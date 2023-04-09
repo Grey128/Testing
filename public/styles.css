@@ -2,12 +2,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    cursor: none;
   }
   
   body {
     font-family: 'Courier New', Courier, monospace;
     background-color: black;
     overflow: hidden;
+    cursor: hidden;
   }
   
   .container {
@@ -25,7 +27,7 @@
     border: none;
     background: none;
     outline: none;
-    cursor: pointer;
+    cursor: none;
   }
 
   .btn-main {
@@ -121,7 +123,7 @@
     background-color: #ffffff;
     border: none;
     padding: 10px;
-    cursor: pointer;
+    cursor: none;
     font-size: 16px;
   }
   
@@ -285,9 +287,50 @@
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
-  cursor: pointer;
+  cursor: none;
 }
 
 .image-card button:hover {
   background-color: #555;
+}
+
+.star-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background-color: rgb(255, 0, 0);
+  border-radius: 50%;
+  clip-path: polygon(50% 0%, 61% 35%, 100% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 0% 35%, 39% 35%);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: grey;
+}
+
+.commissions-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  padding-top: 10%;
+  background-image: url('wireframe-pattern.png');
+  background-size: cover;
+}
+
+.commissions-closed {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 3rem;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: -1;
 }
