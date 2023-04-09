@@ -7,6 +7,9 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 const path = require('path');
 const { unlink } = require('fs/promises');
+const flash = require('express-flash');
+const cookieParser = require('cookie-parser');
+
 
 const app = express();
 const storage = multer.diskStorage({
@@ -27,6 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(cookieParser('keyboard cat'));
+app.use(flash());
 
 
 
@@ -73,6 +78,7 @@ function ensureAuthenticated(req, res, next) {
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/main.html',
   failureRedirect: '/login.html',
+  failureFlash: true
 }));
 
 app.post('/upload', ensureAuthenticated, upload.single('image'), (req, res) => {
