@@ -13,7 +13,36 @@ body {
     position: absolute;
     width: 20px;
     height: 20px;
-    background-color: black;
     pointer-events: none;
+  }
+  
+  .image-container {
+    display: inline-block;
+    position: relative;
+    margin: 10px;
+  }
+  
+  .image-container img {
+    width: 100px;
+    height: auto;
+    transition: transform 0.3s;
+  }
+  
+  .image-container:hover img {
+    transform: scale(1.5);
+  }
+  
+  .image-container span {
+    display: none;
+  }
+  
+  .image-container:hover span {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
   }
   
