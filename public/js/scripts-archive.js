@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       starsContainer.removeChild(star);
-    }, 1000);
+    }, 10000);
   }
 
   function spawnStar() {
@@ -42,28 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setInterval(spawnStar, 1000 / starFrequency);
 
-  // Add image hovering and titles
-  const images = [
-    { src: '/uploads/cat.jpg', title: 'Image 1' },
-    { src: '/uploads/test.jpg', title: 'Image 2' },
-    // Add more images here
-  ];
-
-  const container = document.createElement('div');
-  container.style.position = 'relative';
-  body.appendChild(container);
-
-  images.forEach((image) => {
-    const imageContainer = document.createElement('div');
-    imageContainer.classList.add('image-container');
-    container.appendChild(imageContainer);
-
-    const img = document.createElement('img');
-    img.src = image.src;
-    imageContainer.appendChild(img);
-
-      const title = document.createElement('span');
-    title.innerText = image.title;
-    imageContainer.appendChild(title);
-  });
+  function update() {
+    requestAnimationFrame(update);
+  }
 });
